@@ -183,3 +183,7 @@ Tests use authored fixtures. Docker integration tests require an explicitly conf
 Contributions should preserve conservative verdicts, source evidence, and execution boundaries. Read [CONTRIBUTING.md](CONTRIBUTING.md) and use [GitHub issues](https://github.com/Balaji91221/patchproof/issues) for reproducible bugs or focused proposals.
 
 Original project code is [MIT licensed](LICENSE). Dependencies retain their own licenses. The PyPI distribution name is `patchproof-ai`; source and development documentation live in this GitHub repository.
+
+---
+
+Explore more of my work: [latest open-source tools](https://github.com/Balaji91221#latest-open-source-tools) · [recent projects](https://github.com/Balaji91221#recent-work).
