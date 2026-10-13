@@ -1,0 +1,14 @@
+include LICENSE README.md README_PYPI.md CHANGELOG.md CONTRIBUTING.md SECURITY.md
+include PROJECT_PLAN.md IMPLEMENTATION_STATUS.md requirements-test.lock
+include scripts/check_release.py
+include examples/demo.py examples/Dockerfile examples/dependencies.json examples/expectations.json
+recursive-include src *.py
+recursive-include tests *.py
+recursive-include docs *.md *.svg *.png
+prune examples/evidence
+prune .git
+prune .venv
+prune build
+prune dist
+prune runs
+global-exclude __pycache__ *.py[cod] .DS_Store .env .env.* *.log

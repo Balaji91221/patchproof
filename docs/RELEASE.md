@@ -1,25 +1,69 @@
 # Release process
 
-This repository contains the source for local release candidate 0.2.0. Publishing source on GitHub is separate from publishing a PyPI package. No PyPI release, hosted service deployment, or independent maintainer validation is claimed.
+The distribution is **`patchproof-ai`**, version **0.2.0**. Python imports and the
+CLI remain `patchproof`. The unrelated `patchproof` PyPI name is not this project.
+Building and checking artifacts does not upload them.
 
-## Local gate
+## Verification gate
 
-1. Use a clean Python virtual environment and install `requirements-test.lock` plus build tools `build`, `wheel` and `setuptools`.
-2. Run `python scripts/check_release.py`. It runs authored fixtures, builds a wheel without network resolution, installs that wheel in a fresh environment, imports the installed SDK, checks the CLI and reads a real demo report.
-3. Build a reviewed Python/pytest image. Run `PATCHPROOF_DOCKER_IMAGE=image:tag PYTHONPATH=src python -m unittest discover -s tests -v` with Docker available. No container pulls happen during verification.
-4. Review the wheel contents, generated reports, changelog and documented limitations. Do not include real source snippets or credentials in public examples.
-5. Run the CI matrix on a repository host. The workflow is supplied; a local pass is not proof the hosted matrix passed.
+```bash
+python -m pip install -r requirements-test.lock build wheel 'setuptools>=77' twine
+python scripts/check_release.py
+```
 
-## Decisions before a PyPI release
+The gate runs source tests, builds a fresh sdist, then builds the wheel **from that
+sdist**. It checks exact distribution/version metadata, the PEP 639 MIT license,
+archive contents, and PyPI README rendering with `twine check --strict`. It installs
+the wheel with its runner extra in a fresh virtual environment, clears PYTHONPATH,
+and runs installed SDK/CLI checks, the tests included in the sdist, and the authored
+fail-before/pass-after demo. Tests and the demo use the installed package.
 
-- Original project code is MIT licensed. Preserve LICENSE in release artifacts and review independent third-party dependency license obligations and contributor terms.
-- Verify availability and ownership of the distribution name and command; `patchproof-local` is only a local package identifier.
-- Confirm the source repository and private security-reporting URLs in project metadata, and test the reporting route.
-- Pin CI actions and reviewed container bases to immutable digests for the release policy.
-- Review the optional remote proposal data flow and supported model configuration with real API credentials in an explicitly authorized test.
-- Obtain independent pilot feedback. None is claimed by fixture tests.
-- Build a signed/tagged package release, record input hashes and lock manifests, then publish to PyPI only through an explicitly authorized release process. Source publication alone does not authorize a registry upload.
+The fresh output artifacts are copied to `dist/`; older files are never selected
+as inputs. Upload only the two artifacts named in the gate's final result, not an
+unchecked wildcard over old releases. The result includes SHA-256 digests.
+
+Options: `--output-dir PATH` selects an artifact directory; `--wheelhouse PATH`
+uses an existing offline dependency wheelhouse; `--installer uv` selects `uv`
+with system certificate validation. Without a wheelhouse, installing runner
+dependencies may contact the configured package index. No TLS bypass is used.
+
+For live Docker checks, build a reviewed Python/pytest image and run:
+
+```bash
+PATCHPROOF_DOCKER_IMAGE=image:tag PYTHONPATH=src python -m unittest discover -s tests -v
+```
+
+No container pulls occur during test verification. Container construction may
+fetch the base image and dependencies. Hosted CI results are available in
+[GitHub Actions](https://github.com/Balaji91221/patchproof/actions/workflows/ci.yml).
+
+## Artifact contents
+
+The wheel includes the `patchproof` Python modules, entry point, metadata, and MIT
+license. The sdist additionally includes authored tests, demo/Docker recipes,
+requirements lock, release script, documentation, and sanitized README visuals.
+`MANIFEST.in` explicitly excludes local `examples/evidence` inventories, run
+outputs, credentials, caches, prior builds, and old distributions.
+
+`README_PYPI.md` is the registry description; its links and PNG image use absolute
+public URLs. Keep it consistent with the GitHub README and actual interfaces.
+The base package has no runtime dependencies; `runner` pins pytest 9.1.1.
+
+## Registry release
+
+Confirm account ownership, the final artifact names and hashes, release notes,
+and explicit upload authorization. Do not upload a stale local-name wheel.
+Preserve third-party dependency licenses. Publication and tags are deliberate
+operations performed separately from the verification script.
+
+Independent pilots and live model-quality evaluation are not established by
+fixture tests. The optional provider remains opt-in and generated tests are never
+automatically executed. See [verification status](../IMPLEMENTATION_STATUS.md)
+and [security boundaries](../SECURITY.md).
 
 ## Compatibility and rollback
 
-Report schema 2 adds attempts, case expectations, artifacts and dependency manifests. The CLI still reads schema 1 reports without rewriting them. Pin package version 0.1.0 to roll back software; retain original reports and inspect new schema reports with 0.2.0. Execution adapters remain explicit and no database migration is required. Each run writes a new output directory and never overwrites previous evidence.
+Report schema 2 adds attempts, per-case expectations, artifacts and dependency
+manifests. Schema-1 reports remain readable. Keep the exact previous reviewed wheel
+and reports before upgrading; this initial `patchproof-ai` release does not imply
+an earlier version exists on PyPI. Each verification writes a new output directory.

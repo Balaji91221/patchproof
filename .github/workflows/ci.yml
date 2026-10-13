@@ -14,12 +14,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
-      - run: python -m pip install -r requirements-test.lock build wheel setuptools
+      - run: python -m pip install -r requirements-test.lock build wheel 'setuptools>=77' twine
       - run: python scripts/check_release.py
       - uses: actions/upload-artifact@v4
         with:
-          name: wheel-${{ matrix.os }}-${{ matrix.python }}
-          path: dist/*.whl
+          name: distributions-${{ matrix.os }}-${{ matrix.python }}
+          path: dist/*
   docker-integration:
     runs-on: ubuntu-latest
     steps:

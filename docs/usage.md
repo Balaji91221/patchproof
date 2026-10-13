@@ -7,11 +7,11 @@ This guide preserves the detailed CLI, SDK, execution, and proposal recipes.
 
 PatchProof checks whether the **same supplied regression test fails for an expected reason on a base Git commit and passes after a patch**. It also optionally compares existing tests on both revisions. It creates disposable snapshots and produces JSON and self-contained HTML evidence.
 
-This is a working local release candidate, not a published package or a proof that a patch is correct. No LLM or API key is required. Original project code is licensed under the [MIT License](../LICENSE). Third-party dependencies retain their own licenses. Public package naming remains a release decision.
+Version 0.2.0 is distributed as `patchproof-ai`; the Python import and CLI remain `patchproof`. Its results are regression evidence, not proof that a patch is correct. No LLM or API key is required. Original project code is licensed under the [MIT License](../LICENSE). Third-party dependencies retain their own licenses. The unrelated `patchproof` PyPI distribution is not this project.
 
 ## Quick start
 
-Requires Python 3.10+, Git, and macOS/Linux. Windows process cleanup is not implemented.
+Requires Python 3.10+, Git, and macOS/Linux. Windows process cleanup is not implemented. Install the public distribution with `python -m pip install 'patchproof-ai[runner]'` and verify the command with `patchproof --help`. For a source checkout and its authored examples:
 
 ```bash
 git clone https://github.com/Balaji91221/patchproof.git
@@ -166,4 +166,4 @@ Read the proposal and its assumptions before copying it to a reviewed `.py` file
 
 ## Release checks and remaining external gates
 
-Run `python scripts/check_release.py` for tests, wheel construction, a clean installation and CLI/SDK smoke checks. [the CI workflow](../.github/workflows/ci.yml) defines Linux/macOS Python matrix checks and live Docker fixtures. Current run results are available in [GitHub Actions](https://github.com/Balaji91221/patchproof/actions/workflows/ci.yml). See [the feature matrix](FEATURE_MATRIX.md) and [the release guide](RELEASE.md) for implementation evidence, release decisions and deliberately excluded scope. PyPI publication, pilot feedback and a hosted service are separate steps from publishing the GitHub source.
+Run `python scripts/check_release.py` for tests, wheel construction, a clean installation and CLI/SDK smoke checks. [the CI workflow](../.github/workflows/ci.yml) defines Linux/macOS Python matrix checks and live Docker fixtures. Current run results are available in [GitHub Actions](https://github.com/Balaji91221/patchproof/actions/workflows/ci.yml). See [the feature matrix](FEATURE_MATRIX.md) and [the release guide](RELEASE.md) for implementation evidence, release decisions and deliberately excluded scope. Registry upload remains an explicit release operation; pilot feedback and a hosted service are separate from package availability.

@@ -1,7 +1,7 @@
 # Implementation status
 
-Date: 13 October 2026. Version: 0.2.0 local release candidate. GitHub source
-publication is separate from a PyPI package release; no PyPI distribution is claimed.
+Date: 13 October 2026. Version: 0.2.0. The public distribution name is `patchproof-ai`; imports and CLI
+remain `patchproof`. Package verification and registry upload are separate release steps.
 
 ## Implemented and verified
 
@@ -27,7 +27,7 @@ publication is separate from a PyPI package release; no PyPI distribution is cla
 Repeat the checks from this repository's root:
 
 ```bash
-python -m pip install -r requirements-test.lock build wheel setuptools
+python -m pip install -r requirements-test.lock build wheel 'setuptools>=77' twine
 python scripts/check_release.py
 # With Docker running, build the authored image recipe, then enable all three Docker tests:
 docker build -t patchproof-check:local -f examples/Dockerfile .
@@ -42,6 +42,6 @@ local image, not a claim that this recipe or hosted CI has since run.
 
 - No live Anthropic API call or model quality evaluation was performed; transport/schema/input-safety behavior is verified with controlled provider fixtures. Users must supply credentials and a supported model for an explicitly authorized live check.
 - The GitHub CI matrix is authored but has not run on a hosted repository. Linux test execution was exercised inside Docker; separate host-level Python matrix evidence remains a CI gate.
-- PyPI naming/publication and independent pilot feedback remain external work. GitHub source publication does not constitute a package release or independent validation. Use SECURITY.md for the repository reporting route.
+- Registry upload and independent pilot feedback are separate from local verification. GitHub source publication does not constitute a package release or independent validation. Use SECURITY.md for the repository reporting route.
 - Docker restrictions are exercised but not an exhaustive security certification or VM-level hostile-code boundary. Trusted-local remains explicitly unsandboxed.
 - Scope exclusions and a complete plan mapping are in `docs/FEATURE_MATRIX.md`. Repetition detects observed instability, not proof of non-flakiness or full patch correctness.

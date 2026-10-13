@@ -15,7 +15,7 @@
 | Public SDK/CLI | Versioned manifest, explicit runner protocol, run/report/environment/propose commands | Wheel construction and clean-installed CLI/SDK checks |
 | Optional model test proposal | Explicit remote opt-in Claude adapter; schema-defined tool response, local validation, non-executable proposal outputs, source hashes | Provider request/response fixtures; no live credentialed/model-quality evaluation claimed |
 | CI/release | Linux/macOS Python matrix, Docker job, local package gate, changelog, contribution/security/release docs | Workflow authored; local gate executed; hosted CI not run |
-| PyPI publication and pilots | Remain external gates, separate from GitHub source publication | No PyPI release or independent pilot feedback claimed; original project code is MIT licensed |
+| Registry packaging and pilots | `patchproof-ai` metadata, wheel/sdist and installed-package gate | Upload is an explicit release operation; independent pilot feedback is not claimed |
 
 ## Deliberate boundaries
 

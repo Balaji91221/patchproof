@@ -42,12 +42,19 @@ The result gives a reviewer a concrete comparison. It does not prove that every 
 Requires **Python 3.10+, Git, and macOS or Linux**. No model account is needed.
 
 ```bash
-git clone https://github.com/Balaji91221/patchproof.git
-cd patchproof
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install -e '.[runner]'
+python -m pip install 'patchproof-ai[runner]'
+patchproof --help
+```
 
+The distribution is **`patchproof-ai`**; the Python import and CLI remain **`patchproof`**. The `runner` extra installs pytest. The base install has no runtime dependencies.
+
+To try the authored regression example with the installed package:
+
+```bash
+git clone https://github.com/Balaji91221/patchproof.git
+cd patchproof
 REPORT_DIR="$(mktemp -d)/patchproof-report"
 python examples/demo.py --output "$REPORT_DIR"
 ```
@@ -167,7 +174,7 @@ The execution adapter changes how tests run; the classifier remains independent 
 
 ```bash
 PYTHONPATH=src python -m unittest discover -s tests -v
-python -m pip install -r requirements-test.lock build wheel setuptools
+python -m pip install -r requirements-test.lock build wheel 'setuptools>=77' twine
 python scripts/check_release.py
 ```
 
@@ -175,4 +182,4 @@ Tests use authored fixtures. Docker integration tests require an explicitly conf
 
 Contributions should preserve conservative verdicts, source evidence, and execution boundaries. Read [CONTRIBUTING.md](CONTRIBUTING.md) and use [GitHub issues](https://github.com/Balaji91221/patchproof/issues) for reproducible bugs or focused proposals.
 
-Original project code is [MIT licensed](LICENSE). Dependencies retain their own licenses. The GitHub repository contains the source; no PyPI package release is claimed.
+Original project code is [MIT licensed](LICENSE). Dependencies retain their own licenses. The PyPI distribution name is `patchproof-ai`; source and development documentation live in this GitHub repository.
