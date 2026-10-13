@@ -1,0 +1,37 @@
+name: PatchProof checks
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  tests-and-package:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python: ['3.10', '3.12', '3.13']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -r requirements-test.lock build wheel setuptools
+      - run: python scripts/check_release.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheel-${{ matrix.os }}-${{ matrix.python }}
+          path: dist/*.whl
+  docker-integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-test.lock
+      - run: docker build -t patchproof-ci:local -f examples/Dockerfile .
+      - run: PYTHONPATH=src PATCHPROOF_DOCKER_IMAGE=patchproof-ci:local python -m unittest discover -s tests -v
+      - run: PYTHONPATH=src python examples/demo.py --docker-image patchproof-ci:local --output "$RUNNER_TEMP/patchproof-evidence"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: docker-evidence
+          path: ${{ runner.temp }}/patchproof-evidence

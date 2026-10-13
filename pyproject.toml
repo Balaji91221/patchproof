@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "patchproof-local"
+version = "0.2.0"
+description = "Evidence-backed fail-before/pass-after verification for Python patches"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+runner = ["pytest==9.1.1"]
+
+[project.scripts]
+patchproof = "patchproof.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
