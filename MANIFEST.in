@@ -1,5 +1,5 @@
 include LICENSE README.md README_PYPI.md CHANGELOG.md CONTRIBUTING.md SECURITY.md
-include PROJECT_PLAN.md IMPLEMENTATION_STATUS.md requirements-test.lock
+include IMPLEMENTATION_STATUS.md requirements-test.lock
 include scripts/check_release.py
 include examples/demo.py examples/Dockerfile examples/dependencies.json examples/expectations.json
 recursive-include src *.py

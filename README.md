@@ -166,7 +166,7 @@ The execution adapter changes how tests run; the classifier remains independent 
 |---|---|
 | [Usage](docs/usage.md) | Run Docker checks, set per-case expectations, repeat runs, or inspect artifacts |
 | [Architecture](docs/architecture.md) | Understand HLD, LLD, contracts, and the model boundary |
-| [Feature matrix](docs/FEATURE_MATRIX.md) | Compare implemented capabilities with the project plan |
+| [Feature matrix](docs/FEATURE_MATRIX.md) | Review implemented capabilities and supporting evidence |
 | [Verification status](IMPLEMENTATION_STATUS.md) | Review what was tested and the limits of that evidence |
 | [Release checks](docs/RELEASE.md) | Build a wheel and verify a clean installation |
 
